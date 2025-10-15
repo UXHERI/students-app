@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="panel">
+  <h2>Add Student</h2>
+  <form action="{{ url_for('add_student') }}" method="post" class="student-form">
+    <div class="grid">
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" placeholder="Full name" required />
+      </label>
+      <label>
+        <span>Roll No.</span>
+        <input type="text" name="roll_no" placeholder="Unique roll number" required />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" placeholder="email@example.com" required />
+      </label>
+      <label>
+        <span>Contact</span>
+        <input type="tel" name="contact" placeholder="Phone number" required />
+      </label>
+      <label>
+        <span>Gender</span>
+        <select name="gender" required>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn" type="submit">Add Student</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Student Cards</h2>
+  {% if students %}
+    <div class="cards">
+      {% for s in students %}
+        <article class="card">
+          <div class="avatar">
+            <img src="{{ url_for('static', filename=s['avatar']) }}" alt="{{ s['gender'] }} avatar" />
+          </div>
+          <div class="card-body">
+            <h3 class="name">{{ s['name'] }}</h3>
+            <dl class="details">
+              <div>
+                <dt>Roll No.</dt>
+                <dd>{{ s['roll_no'] }}</dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd><a href="mailto:{{ s['email'] }}">{{ s['email'] }}</a></dd>
+              </div>
+              <div>
+                <dt>Contact</dt>
+                <dd><a href="tel:{{ s['contact'] }}">{{ s['contact'] }}</a></dd>
+              </div>
+              <div>
+                <dt>Gender</dt>
+                <dd>{{ s['gender'] }}</dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No students yet. Add the first one above.</p>
+  {% endif %}
+</section>
+{% endblock %}
