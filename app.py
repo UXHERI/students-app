@@ -4,7 +4,7 @@ import os
 import random
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'
+app.secret_key = os.environ.get('SECRET_KEY') or 'dev-secret-key'
 
 DB_FILE = 'students.db'
 
@@ -32,7 +32,6 @@ def get_random_profile(gender):
     """Get random profile image based on gender"""
     if gender in PROFILE_ICONS and PROFILE_ICONS[gender]:
         return random.choice(PROFILE_ICONS[gender])
-    # Fallback default icon
     return "https://cdn-icons-png.flaticon.com/512/3135/3135768.png"
 
 @app.route('/')
@@ -57,12 +56,10 @@ def add_student():
         contact = request.form['contact'].strip()
         gender = request.form['gender']
 
-        # Basic validation
         if not all([roll_no, name, email, gender]):
             flash("Please fill all required fields", "error")
             return redirect('/')
 
-        # Check if roll number already exists
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
         c.execute("SELECT roll_no FROM students WHERE roll_no = ?", (roll_no,))
@@ -71,7 +68,6 @@ def add_student():
             conn.close()
             return redirect('/')
 
-        # Get random profile image based on gender
         image = get_random_profile(gender)
 
         c.execute("INSERT INTO students (roll_no, name, email, contact, gender, image) VALUES (?, ?, ?, ?, ?, ?)",
@@ -132,6 +128,8 @@ def edit_student(roll_no):
         flash(f"Error updating student: {str(e)}", "error")
         return redirect('/')
 
+# Initialize database when app starts
+init_db()
+
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
