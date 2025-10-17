@@ -4,22 +4,14 @@ import os
 import random
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Needed for flash messages
+app.secret_key = 'your-secret-key-here'
 
 DB_FILE = 'students.db'
 
 # Profile icons for different genders
 PROFILE_ICONS = {
-    'Male': [
-        "https://github.com/UXHERI/students-app/blob/main/icons/Polo-Elite.png?raw=true",
-        "https://cdn-icons-png.flaticon.com/512/147/147144.png",
-        "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-    ],
-    'Female': [
-        "https://cdn-icons-png.flaticon.com/512/147/147147.png",
-        "https://cdn-icons-png.flaticon.com/512/3135/3135823.png",
-        "https://cdn-icons-png.flaticon.com/512/6997/6997662.png"
-    ]
+    'Male': [f"https://github.com/UXHERI/students-app/blob/main/profile_icons/Male/{i}.png?raw=true" for i in range(1, 50)],
+    'Female': [f"https://github.com/UXHERI/students-app/blob/main/profile_icons/Female/{i}.png?raw=true" for i in range(1, 31)]
 }
 
 def init_db():
@@ -38,9 +30,10 @@ def init_db():
 
 def get_random_profile(gender):
     """Get random profile image based on gender"""
-    if gender in PROFILE_ICONS:
+    if gender in PROFILE_ICONS and PROFILE_ICONS[gender]:
         return random.choice(PROFILE_ICONS[gender])
-    return "https://cdn-icons-png.flaticon.com/512/3135/3135768.png"  # Default icon
+    # Fallback default icon
+    return "https://cdn-icons-png.flaticon.com/512/3135/3135768.png"
 
 @app.route('/')
 def index():
