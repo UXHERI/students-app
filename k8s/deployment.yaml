@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: students-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: students-app
+  template:
+    metadata:
+      labels:
+        app: students-app
+    spec:
+      containers:
+        - name: students-app
+          image: 311141542374.dkr.ecr.us-east-1.amazonaws.com/students-app:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SECRET_KEY
+              value: "UXHERI69"
+          volumeMounts:
+            - name: students-db-storage
+              mountPath: /app/data
+      volumes:
+        - name: students-db-storage
+          persistentVolumeClaim:
+            claimName: students-db-pvc
+
