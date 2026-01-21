@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: students-app
-          image: 311141542374.dkr.ecr.us-east-1.amazonaws.com/students-app:latest
+          image: uxheri/students-app:latest
           ports:
             - containerPort: 5000
           env:
