@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: students-app
+  namespace: students-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: students-app

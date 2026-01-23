@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: students-db-pvc
+  namespace: students-app
 spec:
   accessModes:
     - ReadWriteOnce
